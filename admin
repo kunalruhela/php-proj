@@ -1,0 +1,293 @@
+<?php
+//error_reporting(0);
+session_start();
+require_once('conn.php');
+if(!isset($_SESSION['role']) || $_SESSION['role']!='admin'){
+header("location:index.php");
+} 
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="adress.js"></script>
+</head>
+<body>
+<form id="myform" action="adminpage.php" method="post">
+<fieldset>
+    <legend>basic info</legend>
+    <label for="u_role">u_role</label>
+    <input type="text" name="u_role"><br>
+    <label for="uname">uname</label>
+    <input type="text" name="uname"><br>
+    <label for="password">password</label>
+    <input type="text" name="pwd"><br>
+    <label for="email">email</label>
+    <input type="text" name="email"><br>
+    <label for="fname">firstname</label>
+    <input type="text" name="fname"><br>
+    <label for="lname">lastname</label>
+    <input type="text" name="lname"><br>
+    <label for="t_code">t_code</label>
+    <input type="text" name="t_code"><br>
+    <label for="h_phone">h_phone</label>
+    <input type="text" name="h_phone"><br>
+    </fieldset>
+    <fieldset>
+    <legend>Primary address</legend>
+    <label id="building">building</label>
+    <input type="text" name="building"><br>
+    <label id="street">street</label>
+    <input type="text" name="street"><br>
+    <label id="city">city</label>
+    <input type="text" name="city"><br>
+    <label id="state">state</label>
+    <input type="text" name="state"><br>
+    <label id="zip">zip</label>
+    <input type="text" name="zip"><br>
+    </fieldset>
+    Checkbox: <input type="checkbox" id="same"  onclick="addressfunction()">
+    <fieldset id="same" >
+    <legend>Secondary address</legend>
+    <label id="sec_fname">sec_fname</label>
+    <input type="text" name="sec_fname"><br>
+    <label id="sec_lname">sec_lname</label>
+    <input type="text" name="sec_lname"><br>
+    <label id="sec_rel">sec_rel</label>
+    <input type="text" name="sec_rel"><br>
+    <label id="sec_street">sec_street</label>
+    <input type="text" name="sec_street"><br>
+    <label id="sec_city">sec_city</label>
+    <input type="text" name="sec_city"><br>
+    <label id="sec_state">sec_state</label>
+    <input type="text" name="sec_state"><br>
+    <label id="sec_zip">zip</label>
+    <input type="text" name="sec_zip"><br>
+    <label id="sec_email">sec_email</label>
+    <input type="text" name="sec_email"><br>
+    <label id="sec_phone">sec_phone</label>
+    <input type="text" name="sec_phone"><br>
+    </fieldset>
+    <fieldset>
+    <legend>Programs</legend>
+    <label for="house_prog">house_prog</label>
+    <input type="text" name="house_prog"><br>
+    <label for="service_prog">service_prog</label>
+    <input type="text" name="service_prog"><br>
+   </fieldset>
+    <input type="submit" value="submit" name="submit">
+    <input id="log" type="submit" value="view" name="view">
+    <a href="logout.php">logout</a>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#myform').submit(function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: 'login.php',
+            data: html(),
+            success: function(response){
+              $("#log").html(response);
+            }
+        })
+      })
+    });
+</script>    
+</body>
+</html>
+
+<?php
+
+function test_input($data){
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+if($_SERVER["REQUEST_METHOD"]=="POST"){ 
+    $uname=test_input($_POST['uname']);
+    $pwd=test_input($_POST['pwd']);
+    $email=test_input($_POST['email']);
+    $u_role=$_POST['u_role'];
+    $fname=test_input($_POST['fname']);
+    $lname=test_input($_POST['lname']);
+    $t_code=test_input($_POST['t_code']);
+    $h_phone=test_input($_POST['h_phone']);
+    $building=test_input($_POST['building']);
+    $street=test_input($_POST['street']);
+    $city=test_input($_POST['city']);
+    $u_state=test_input($_POST['state']);
+    $zip=test_input($_POST['zip']);
+    $sec_fname=test_input($_POST['sec_fname']);
+    $sec_lname=test_input($_POST['sec_lname']);
+    $sec_rel=test_input($_POST['sec_rel']);
+    $sec_street=test_input($_POST['sec_street']);
+    $sec_city=test_input($_POST['sec_city']);
+    $sec_state=test_input($_POST['sec_state']);
+    $sec_zip=test_input($_POST['sec_zip']);
+    $sec_email=test_input($_POST['sec_email']);
+    $sec_phone=test_input($_POST['sec_phone']);
+    $house_prog=test_input($_POST['house_prog']);
+    $service_prog=test_input($_POST['service_prog']);
+   
+  //  for username/phone number
+    if(empty($uname)){
+        echo("Username should not be empty");
+    }elseif(!preg_match("/^[a-zA-Z]*$/",$uname)){
+        die("Username should not contain white space and special charecter");
+    }
+
+        
+        // mail
+        if(!empty($email)){
+         // $email=filter_var($email,FILTER_SANITIZE_EMAIL);
+          // echo $email;
+          if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+            $email=test_input($email);
+            //echo "Email: $email";
+          }else{
+            die("Invalid email address");
+          }
+        }else{
+          die("Email needs to be entered");
+        }
+    
+    //     // h_phone
+      // if(empty($h_phone)){
+      //   echo "phone number should not be empty";
+      // }
+        
+
+         if(!empty($h_phone)){
+          if(!preg_match("/^[0-9]{10}$/",$h_phone)){
+           // echo "phone number is valid: $h_phone";
+           die("phone number is not valid");
+          }
+          //die("phone number must not be empty");
+          }else{
+            die("phone no is empty");
+          }
+        //}
+        //}
+
+          if(empty($fname)){
+            echo("firstname should not be empty");
+          }elseif(!preg_match("/^[a-zA-Z]*$/",$fname)){
+            die("firstname should not contain whitespace and special charecter ");
+          }
+
+        if(empty($lname)){
+          echo("last should not be empty");
+      }elseif(!preg_match("/^[a-zA-Z]*$/",$lname)){
+          die("lastname should not contain whitespace and special charecter ");
+      }
+
+        if(empty($t_code)){
+          die("t_code should not be empty");
+        } 
+       
+        if(empty($building)){
+          die("Building should not be empty");
+        }
+
+        if(empty($street)){
+          die("street should not be empty");
+        }
+        
+        if(empty($u_state)){
+          die("state should not be empty");
+        }
+
+        if(empty($zip)){
+          echo("zip should not be empty");
+        }elseif(!preg_match("/^[0-9]{6}$/",$zip)){
+          die("zip is invalid");
+        }
+        
+        if(empty($sec_fname)){
+          echo("sec_firstname should not be empty");
+        }elseif(!preg_match("/^[a-zA-Z ]*$/",$sec_fname)){
+          die ("sec_firstname should not contain whitespace and special charecter ");
+        }
+        if(empty($sec_lname)){
+          echo("sec_lastname should not be empty");
+        }elseif(!preg_match("/^[a-zA-Z ]*$/",$fname)){
+          die ("sec_lastname should not contain whitespace and special charecter ");
+        }
+
+        if(!empty($sec_email)){
+          // $email=filter_var($email,FILTER_SANITIZE_EMAIL);
+           // echo $email;
+           if(filter_var($sec_email,FILTER_VALIDATE_EMAIL)){
+             $sec_email=test_input($sec_email);
+            // echo "Sec_Email: $sec_email";
+           }else{
+             die("Invalid email address");
+           }
+         }else{
+           die("Email needs to be entered");
+         }
+
+        if(!empty($sec_phone)){
+          if(preg_match("/^[0-9]{10}$/",$sec_phone)){
+            echo "sec_phone number is valid: $sec_phone";
+          }else{
+            die("secondary phone number is not valid");
+          }
+          die("secondary phone number must not be empty");
+          }
+
+         if(empty($sec_street)){
+          die("sec_street should not be empty");
+        }
+                  // password hash
+          $pwd1=password_hash($pwd,PASSWORD_DEFAULT);
+          //building
+        if(empty($sec_rel)){
+           die("relation should not be empty");
+          }
+
+          if(empty($sec_city)){
+            die("secondary city should not be empty");
+           }
+           
+           if(empty($sec_zip)){
+            die("secondary zip should not be empty");
+           }
+           
+           if(empty($sec_rel)){
+            die("relation should not be empty");
+           }
+
+           if(empty($house_prog)){
+            die("house_prog should not be empty");
+           }
+
+           if(empty($service_prog)){
+            die("service_prog should not be empty");
+           }
+            // if(($_POST['uname']=="") || ($_POST['pwd']=="") || ($_POST['email']=="") || ($_POST['fname']=="") || ($_POST['lname']=="") || ($_POST['t_code']=="") || ($_POST['h_phone']=="") || ($_POST['building']=="") || ($_POST['street']=="") || ($_POST['city']=="") || ($_POST['state']=="") || ($_POST['zip']=="") || ($_POST['house_prog']=="") || ($_POST['service_prog']==""))
+            // {
+            //     echo "fill all fields";
+            // }else{
+       
+           // $sql= "INSERT INTO users(uname,email,pwd) VALUES('$uname','$email,','$pwd')";
+        
+        $sql = "INSERT INTO users(uname,email,pwd,u_role,fname,lname,t_code,h_phone,building,street,city,u_state,
+        zip,sec_fname,sec_lname,sec_rel,sec_street,sec_city,sec_state,sec_zip,sec_email,
+        sec_phone,house_prog,service_prog) VALUES('$uname','$email','$pwd','$u_role',
+        '$fname','$lname','$t_code','$h_phone','$building','$street','$city','$u_state',
+        '$zip','$sec_fname','$sec_lname','$sec_rel','$sec_street','$sec_city','$sec_state',
+        '$sec_zip','$sec_email','$sec_phone','$house_prog','$service_prog')";
+        
+        $result=$conn->query($sql); 
+               
+        if($result){
+            echo "data entered";
+        }else{
+            echo "failed";
+        }
+}
