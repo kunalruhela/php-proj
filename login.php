@@ -30,13 +30,15 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         //echo "1";
         if(password_verify($pwd,$row['pwd'])){
             if($row['u_role']=="admin"){
-                echo "1";
+                //echo "1";
                 $_SESSION['role']=$row['u_role'];
-                header("location:adminpage.php");   
+                header("location:admin.php");   
             }else{
                 $_SESSION['role']=$row['u_role'];
                 header("location:dashborad.php");
             }
+        }else{
+            die("invalid entry");
         }
        }else{
         echo"login fail";

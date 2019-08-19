@@ -8,7 +8,7 @@
 // }
 // else
 // {
-//     header('location:adminpage.php');
+//     header('location:admin.php');
 // }
 require_once('conn.php');
 $uname=$_GET['uname'];

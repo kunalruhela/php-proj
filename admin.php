@@ -4,7 +4,8 @@ session_start();
 require_once('conn.php');
 if(!isset($_SESSION['role']) || $_SESSION['role']!='admin'){
 header("location:index.php");
-} 
+}
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,12 +13,15 @@ header("location:index.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="adress.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form id="myform" action="adminpage.php" method="post">
-<fieldset>
-    <legend>basic info</legend>
+<form action="admin.php" method="post">
+    <fieldset><legend>basic info</legend>
     <label for="u_role">u_role</label>
     <input type="text" name="u_role"><br>
     <label for="uname">uname</label>
@@ -35,67 +39,103 @@ header("location:index.php");
     <label for="h_phone">h_phone</label>
     <input type="text" name="h_phone"><br>
     </fieldset>
-    <fieldset>
-    <legend>Primary address</legend>
-    <label id="building">building</label>
-    <input type="text" name="building"><br>
-    <label id="street">street</label>
-    <input type="text" name="street"><br>
-    <label id="city">city</label>
-    <input type="text" name="city"><br>
-    <label id="state">state</label>
-    <input type="text" name="state"><br>
-    <label id="zip">zip</label>
-    <input type="text" name="zip"><br>
+    <fieldset><legend>Primary address</legend>
+    <!-- <label for="building">building</label> -->
+    building:<input type="text" id="building" name="building" value=""><br>
+    <!-- <label for="street">street</label> -->
+    street:<input type="text" id="street" name="street" value=""><br>
+    <!-- <label for="city">city</label> -->
+    city:<input type="text" id="city" name="city" value=""><br>
+    <!-- <label for="state">state</label> -->
+    state:<input type="text" id="u_state" name="u_state" value=""><br>
+    <!-- <label for="zip">zip</label> -->
+    zip:<input type="text" id="zip" name="zip" value=""><br></fieldset>
+
+    Checkbox: <input type="checkbox" id="same"  onclick="addressFunction()">
+    <label for="same">if primary same as secondary address</label>
+   
+   <fieldset><legend>Secondary detail</legend>
+    <!-- <label for="sec_fname">sec_fname</label> -->
+    sec_fname:<input type="text" name="sec_fname" value=""><br>
+    <!-- <label for="sec_lname">sec_lname</label> -->
+    sec_lname:<input type="text"  name="sec_lname" value=""><br>
+    <!-- <label for="sec_rel">sec_rel</label> -->
+    sec_phone:<input type="text"  name="sec_phone" value=""><br>
+    sec_email:<input type="text"  name="sec_email" value=""><br>
+    sec_rel:<input type="text"  name="sec_rel" value=""><br></fieldset>
+    <!-- <label for="sec_street">sec_street</label> -->
+    
+    <fieldset><legend>Secondary address</legend>
+    sec_street:<input type="text" id="sec_street" name="sec_street" value=""><br>
+    <!-- <label for="sec_city">sec_city</label> -->
+    sec_city:<input type="text" id="sec_city" name="sec_city" value=""><br>
+    <!-- <label for="sec_state">sec_state</label> -->
+    sec_state:<input type="text" id="sec_state" name="sec_state" value=""><br>
+    <!-- <label for="sec_zip">zip</label> -->
+    sec_zip:<input type="text" id="sec_zip" name="sec_zip" value=""><br>
+    <!-- <label for="sec_email">sec_email</label> -->
+    <!-- sec_email:<input type="text" id="sec_email" name="sec_email" value=""><br> -->
+    <!-- <label for="sec_phone">sec_phone</label> -->
+    <!-- sec_phone:<input type="text" id="sec_phone" name="sec_phone" value=""><br> -->
     </fieldset>
-    Checkbox: <input type="checkbox" id="same"  onclick="addressfunction()">
-    <fieldset id="same" >
-    <legend>Secondary address</legend>
-    <label id="sec_fname">sec_fname</label>
-    <input type="text" name="sec_fname"><br>
-    <label id="sec_lname">sec_lname</label>
-    <input type="text" name="sec_lname"><br>
-    <label id="sec_rel">sec_rel</label>
-    <input type="text" name="sec_rel"><br>
-    <label id="sec_street">sec_street</label>
-    <input type="text" name="sec_street"><br>
-    <label id="sec_city">sec_city</label>
-    <input type="text" name="sec_city"><br>
-    <label id="sec_state">sec_state</label>
-    <input type="text" name="sec_state"><br>
-    <label id="sec_zip">zip</label>
-    <input type="text" name="sec_zip"><br>
-    <label id="sec_email">sec_email</label>
-    <input type="text" name="sec_email"><br>
-    <label id="sec_phone">sec_phone</label>
-    <input type="text" name="sec_phone"><br>
-    </fieldset>
+    
     <fieldset>
     <legend>Programs</legend>
     <label for="house_prog">house_prog</label>
     <input type="text" name="house_prog"><br>
     <label for="service_prog">service_prog</label>
     <input type="text" name="service_prog"><br>
-   </fieldset>
+    </fieldset>
+    
     <input type="submit" value="submit" name="submit">
-    <input id="log" type="submit" value="view" name="view">
-    <a href="logout.php">logout</a>
+      
 </form>
+<!-- <div id='a'></div> -->
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#myform').submit(function(e) {
-        e.preventDefault();
+// $(document).ready(function() {
+//     $('#loginform').submit(function(e) {
+//         e.preventDefault();
         $.ajax({
             type: "POST",
-            url: 'login.php',
-            data: html(),
-            success: function(response){
-              $("#log").html(response);
+            url: 'admin.php',
+            datatype: 'html',
+            succes s: function(data){
+              $('#a').html(data);
             }
         })
       })
     });
-</script>    
+</script>
+<script src="address.js" type="text/javascript"></script>
+
+<table>
+<thead>
+<th>Username</th>
+<th>email</th>
+<th>View</th>
+<th>Delete</th>
+</thead>
+<tbody id="responsedata">
+<?php
+require_once('conn.php');
+$sql="SELECT * FROM users";
+$query=mysqli_query($conn,$sql);
+
+    while($result=mysqli_fetch_array($query))
+    {
+    ?>
+    <tr>
+    <td><?php echo $result['uname']?></td>
+    <td><?php echo $result['email']?></td>
+    <td><button><a href="view.php?uname=<?php echo $result['uname']?>">view</button></td>
+    <td><button><a href="delete.php?uname=<?php echo $result['uname']?>">delete</button></td>
+    </tr>
+    <?php
+    }
+?>
+</tbody>
+</table>
+<a href="logout.php">logout</a>
 </body>
 </html>
 
@@ -119,7 +159,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     $building=test_input($_POST['building']);
     $street=test_input($_POST['street']);
     $city=test_input($_POST['city']);
-    $u_state=test_input($_POST['state']);
+    $u_state=test_input($_POST['u_state']);
     $zip=test_input($_POST['zip']);
     $sec_fname=test_input($_POST['sec_fname']);
     $sec_lname=test_input($_POST['sec_lname']);
@@ -135,14 +175,22 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
    
   //  for username/phone number
     if(empty($uname)){
-        echo("Username should not be empty");
+        die("Username should not be empty");
     }elseif(!preg_match("/^[a-zA-Z]*$/",$uname)){
         die("Username should not contain white space and special charecter");
+    }else{
+      //$sql="select * from users where uname='$uname'";
+      $result=$conn->query("SELECT * FROM users WHERE uname='$uname'");
+      if($result->fetch_array()>0){
+        die("username already exists");
+       // die();
+      }
     }
 
         
         // mail
-        if(!empty($email)){
+        if(empty($email)){
+          die("Email needs to be entered");
          // $email=filter_var($email,FILTER_SANITIZE_EMAIL);
           // echo $email;
           if(filter_var($email,FILTER_VALIDATE_EMAIL)){
@@ -152,8 +200,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             die("Invalid email address");
           }
         }else{
-          die("Email needs to be entered");
+          $result=$conn->query("SELECT * FROM users WHERE email='$email'");
+          if($result->fetch_array()>0){
+        die("email already exists"); 
         }
+      }
     
     //     // h_phone
       // if(empty($h_phone)){
@@ -177,17 +228,32 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             echo("firstname should not be empty");
           }elseif(!preg_match("/^[a-zA-Z]*$/",$fname)){
             die("firstname should not contain whitespace and special charecter ");
+          }else{
+            $result=$conn->query("SELECT * FROM users WHERE fname='$fname'");
+            if($result->fetch_array()>0){
+              die("firstname already exists");
           }
+        }
 
         if(empty($lname)){
           echo("last should not be empty");
       }elseif(!preg_match("/^[a-zA-Z]*$/",$lname)){
           die("lastname should not contain whitespace and special charecter ");
+      }else{
+        $result=$conn->query("SELECT * FROM users WHERE lname='$lname'");
+      if($result->fetch_array()>0){
+        die("lastname already exists");
       }
+    }
 
         if(empty($t_code)){
           die("t_code should not be empty");
-        } 
+        }else{
+          $result=$conn->query("SELECT * FROM users WHERE t_code='$t_code'");
+      if($result->fetch_array()>0){
+        die("t_code already exists");
+        }
+      } 
        
         if(empty($building)){
           die("Building should not be empty");
@@ -231,9 +297,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
            die("Email needs to be entered");
          }
 
-        if(!empty($sec_phone)){
+        if(empty($sec_phone)){
           if(preg_match("/^[0-9]{10}$/",$sec_phone)){
-            echo "sec_phone number is valid: $sec_phone";
+           // echo "sec_phone number is valid: $sec_phone";
           }else{
             die("secondary phone number is not valid");
           }
@@ -244,7 +310,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
           die("sec_street should not be empty");
         }
                   // password hash
-          $pwd1=password_hash($pwd,PASSWORD_DEFAULT);
+          //$pwd1=password_hash($pwd,PASSWORD_DEFAULT);
           //building
         if(empty($sec_rel)){
            die("relation should not be empty");
@@ -284,7 +350,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         '$sec_zip','$sec_email','$sec_phone','$house_prog','$service_prog')";
         
         $result=$conn->query($sql); 
-               
+          
         if($result){
             echo "data entered";
         }else{
