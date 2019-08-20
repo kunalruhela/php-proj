@@ -1,5 +1,11 @@
-.bg{
-    background:url('download.jpg') no-repeat;
-    width:100px;
-    height:100px;
-}
+
+   .login-container{
+       height:100%; 
+       width:100%;
+   }
+   .login-form{
+   max-width:100%;
+   width:370px;
+   padding:15px;
+   margin: auto;
+   }

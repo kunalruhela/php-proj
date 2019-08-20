@@ -11,13 +11,13 @@
 //     header('location:admin.php');
 // }
 require_once('conn.php');
-$uname=$_GET['uname'];
-$q="SELECT * FROM users where uname='$uname'";
-$result=mysqli_query($conn,$q);
+//$uid=$_GET['uid'];
+$sql="SELECT * FROM users";
+$result=mysqli_query($conn,$sql);
 $row=mysqli_fetch_assoc($result);
 foreach($row as $ke=> $val)
 {
-   echo $ke.": ".$val."<br>";
+   echo $ke." : " .$val. "<br>";
 }
 
 ?>

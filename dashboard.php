@@ -12,7 +12,7 @@ session_start();
     <title>Document</title>
 </head>
 <body>
-    <h1>welcome </h1>
+    <h1>welcome</h1>
     <a href="logout.php">logout</a>
 </body>
 </html>

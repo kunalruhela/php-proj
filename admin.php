@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-// include_once('i.css');
+//include_once('i.css');
 session_start();
 require_once('conn.php');
 if(!isset($_SESSION['role']) || $_SESSION['role']!='admin'){
@@ -111,7 +111,7 @@ $query=mysqli_query($conn,$sql);
     <tr>
     <td><?php echo $result['uname']?></td>
     <td><?php echo $result['email']?></td>
-    <td><button><a href="view.php?uname=<?php echo $result['uname']?>">view</button></td>
+    <td><button><a href="k.php?uname=<?php echo $result['uname']?>">view</button></td>
     <td><button><a href="delete.php?uname=<?php echo $result['uname']?>">delete</button></td>
     </tr>
     <?php
@@ -294,7 +294,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
           die("sec_street should not be empty");
         }
                   // password hash
-          //$pwd1=password_hash($pwd,PASSWORD_DEFAULT);
+          $pwd1=password_hash($pwd,PASSWORD_DEFAULT);
           //building
         if(empty($sec_rel)){
            die("relation should not be empty");
