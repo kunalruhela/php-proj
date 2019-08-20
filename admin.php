@@ -1,5 +1,6 @@
 <?php
 //error_reporting(0);
+// include_once('i.css');
 session_start();
 require_once('conn.php');
 if(!isset($_SESSION['role']) || $_SESSION['role']!='admin'){
@@ -20,16 +21,16 @@ header("location:index.php");
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form action="admin.php" method="post">
+<form id="loginform" action="admin.php" method="post">
     <fieldset><legend>basic info</legend>
     <label for="u_role">u_role</label>
-    <input type="text" name="u_role"><br>
+    <input  type="text" name="u_role"><br>
     <label for="uname">uname</label>
-    <input type="text" name="uname"><br>
+    <input id="uname" type="text" name="uname"><br>
     <label for="password">password</label>
     <input type="text" name="pwd"><br>
     <label for="email">email</label>
-    <input type="text" name="email"><br>
+    <input id="email" type="text" name="email"><br>
     <label for="fname">firstname</label>
     <input type="text" name="fname"><br>
     <label for="lname">lastname</label>
@@ -37,7 +38,7 @@ header("location:index.php");
     <label for="t_code">t_code</label>
     <input type="text" name="t_code"><br>
     <label for="h_phone">h_phone</label>
-    <input type="text" name="h_phone"><br>
+    <input id="h_phone" type="text" name="h_phone"><br>
     </fieldset>
     <fieldset><legend>Primary address</legend>
     <!-- <label for="building">building</label> -->
@@ -86,28 +87,11 @@ header("location:index.php");
     <label for="service_prog">service_prog</label>
     <input type="text" name="service_prog"><br>
     </fieldset>
-    
-    <input type="submit" value="submit" name="submit">
+    <input id="update_data" type="submit" value="submit" name="submit">
       
 </form>
-<!-- <div id='a'></div> -->
-<script type="text/javascript">
-// $(document).ready(function() {
-//     $('#loginform').submit(function(e) {
-//         e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: 'admin.php',
-            datatype: 'html',
-            succes s: function(data){
-              $('#a').html(data);
-            }
-        })
-      })
-    });
-</script>
-<script src="address.js" type="text/javascript"></script>
 
+<script src="address.js" type="text/javascript"></script>
 <table>
 <thead>
 <th>Username</th>
@@ -115,7 +99,7 @@ header("location:index.php");
 <th>View</th>
 <th>Delete</th>
 </thead>
-<tbody id="responsedata">
+<tbody id="table">
 <?php
 require_once('conn.php');
 $sql="SELECT * FROM users";

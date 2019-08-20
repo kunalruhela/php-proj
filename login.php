@@ -12,6 +12,7 @@ session_start();
 </head>
 <body>
 <form action="login.php" method="POST">
+<div class="form_group"></div>
     username:<input type="text" name="uname"><br>
     password:<input type="password" name="pwd"><br>
     <input type="submit" value="submit" name="submit">
