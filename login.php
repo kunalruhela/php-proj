@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 require_once("conn.php");
 session_start();
 ?>
@@ -43,31 +43,54 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     $uname=$_POST['uname'];
     $pwd=$_POST['pwd'];
     //$pwd=password_hash($pwd,PASSWORD_DEFAULT);
-    $sql="Select * from users where uname='$uname'";
-    $result=$conn->query($sql);
-    $row=$result->fetch_assoc();
+    $sql="SELECT * FROM users WHERE uname='$uname'";
+    $result= $conn-> query($sql);
+    $row= $result-> fetch_assoc();
+    //$count=mysqli_num_row($result);
     $role = $row['u_role'];
-    $name=$row['uname'];
+    $uname=$row['uname'];
     //$pwd1 = $row['pwd'];
-    $pwd1=password_hash($pwd,PASSWORD_DEFAULT);
-    if($row){
-        //echo "1";
-        if(password_verify($pwd,$pwd1)){
-            if($role =="admin"){
-                //echo "1";
-                $_SESSION['role']=$role;
-                header("location:admin.php");   
-        }else{
-            $_SESSION['role']=$role;
-            $username=$name;
-            header("location:k.php");
-        //echo "hello";
-        } 
-        }else{
-        echo"Invalid";
+   //$pwd1=password_hash($pwd,PASSWORD_DEFAULT);
+   if(isset($row)){
+    if(password_verify($pwd,$row['pwd'])){
+        if($role=="admin"){
+            echo "admin";
+            $_SESSION['u_role']=$role;
+            $_SESSION['uname']=$uname;
+            header("location:admin.php");
+        }elseif($role=="user"){
+            echo "user";
+            $_SESSION['u_role']=$role;
+            $_SESSION['uname']=$uname;
+            $uname=$row['uname'];
+            header("location:view.php?uname=$uname");
         }
     }else{
-        echo "no entry done";
+        //$msg=Login Failed,Please redo;
+        header("location:login.php?msg=Wrong data entry");
     }
+}else{
+    echo "NO Data Entered";
+}
+   
+   // if($row){
+    //     //echo "1";
+    //     if(password_verify($pwd,$pwd1)){
+    //         if($role =="admin"){
+    //             //echo "1";
+    //             $_SESSION['role']=$role;
+    //             header("location:adminpage.php");   
+    //     }else{
+    //         $_SESSION['role']=$role;
+    //         $username=$name;
+    //         header("location:view.php");
+    //     //echo "hello";
+    //     } 
+    //     }else{
+    //     echo"Invalid";
+    //     }
+    // }else{
+    //     echo "no entry done";
+    // }
 }
 ?>

@@ -1,7 +1,6 @@
-<?php
+<!-- <?php
  session_start();
 require_once('conn.php');
-//$uid=$_GET['uid'];
 $uname=$_GET['uname'];
 $sql="SELECT * FROM users where uname='$uname'";
 $result=$conn->query($sql);
@@ -12,4 +11,4 @@ foreach($row as $ke=> $val)
 }
 
 ?>
-<a href="logout.php">logout</a>
+<a href="logout.php">logout</a> -->

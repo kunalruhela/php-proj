@@ -1,9 +1,8 @@
 <?php
 //error_reporting(0);
-//include_once('i.css');
 session_start();
 require_once('conn.php');
-if(!isset($_SESSION['u_role']) || $_SESSION['u_role']!='admin'){
+if(!isset($_SESSION['role']) || $_SESSION['role']!='admin'){
 header("location:index.php");
 }
  
@@ -21,16 +20,16 @@ header("location:index.php");
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form id="loginform" action="admin.php" method="post">
+<form action="adminpage.php" method="post">
     <fieldset><legend>basic info</legend>
     <label for="u_role">u_role</label>
-    <input  type="text" name="u_role"><br>
+    <input type="text" name="u_role"><br>
     <label for="uname">uname</label>
-    <input id="uname" type="text" name="uname"><br>
+    <input type="text" name="uname"><br>
     <label for="password">password</label>
     <input type="text" name="pwd"><br>
     <label for="email">email</label>
-    <input id="email" type="text" name="email"><br>
+    <input type="text" name="email"><br>
     <label for="fname">firstname</label>
     <input type="text" name="fname"><br>
     <label for="lname">lastname</label>
@@ -38,7 +37,7 @@ header("location:index.php");
     <label for="t_code">t_code</label>
     <input type="text" name="t_code"><br>
     <label for="h_phone">h_phone</label>
-    <input id="h_phone" type="text" name="h_phone"><br>
+    <input type="text" name="h_phone"><br>
     </fieldset>
     <fieldset><legend>Primary address</legend>
     <!-- <label for="building">building</label> -->
@@ -87,11 +86,12 @@ header("location:index.php");
     <label for="service_prog">service_prog</label>
     <input type="text" name="service_prog"><br>
     </fieldset>
-    <input id="update_data" type="submit" value="submit" name="submit">
+    
+    <input type="submit" value="submit" name="submit">
       
 </form>
+<script src="adress.js" type="text/javascript"></script>
 
-<script src="address.js" type="text/javascript"></script>
 <table>
 <thead>
 <th>Username</th>
@@ -99,7 +99,7 @@ header("location:index.php");
 <th>View</th>
 <th>Delete</th>
 </thead>
-<tbody id="table">
+<tbody id=responsedata>
 <?php
 require_once('conn.php');
 $sql="SELECT * FROM users";
@@ -293,9 +293,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
          if(empty($sec_street)){
           die("sec_street should not be empty");
         }
-         // password hash
-          $pwd1=password_hash($pwd,PASSWORD_DEFAULT);
-          
+                  // password hash
+          //$pwd1=password_hash($pwd,PASSWORD_DEFAULT);
           //building
         if(empty($sec_rel)){
            die("relation should not be empty");
@@ -329,7 +328,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         
         $sql = "INSERT INTO users(uname,email,pwd,u_role,fname,lname,t_code,h_phone,building,street,city,u_state,
         zip,sec_fname,sec_lname,sec_rel,sec_street,sec_city,sec_state,sec_zip,sec_email,
-        sec_phone,house_prog,service_prog) VALUES('$uname','$email','$pwd1','$u_role',
+        sec_phone,house_prog,service_prog) VALUES('$uname','$email','$pwd','$u_role',
         '$fname','$lname','$t_code','$h_phone','$building','$street','$city','$u_state',
         '$zip','$sec_fname','$sec_lname','$sec_rel','$sec_street','$sec_city','$sec_state',
         '$sec_zip','$sec_email','$sec_phone','$house_prog','$service_prog')";
