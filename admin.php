@@ -19,9 +19,12 @@ header("location:index.php");
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="address.js" type="text/javascript"></script>
+<script src="script.js" type="text/javascript"></script>
+
 </head>
 <body>
-<form id="loginform" action="admin.php" method="post">
+<form action="admin.php" method="post">
     <fieldset><legend>basic info</legend>
     <label for="u_role">u_role</label>
     <input  type="text" name="u_role"><br>
@@ -51,9 +54,6 @@ header("location:index.php");
     state:<input type="text" id="u_state" name="u_state" value=""><br>
     <!-- <label for="zip">zip</label> -->
     zip:<input type="text" id="zip" name="zip" value=""><br></fieldset>
-
-    Checkbox: <input type="checkbox" id="same"  onclick="addressFunction()">
-    <label for="same">if primary same as secondary address</label>
    
    <fieldset><legend>Secondary detail</legend>
     <!-- <label for="sec_fname">sec_fname</label> -->
@@ -66,6 +66,7 @@ header("location:index.php");
     sec_rel:<input type="text"  name="sec_rel" value=""><br></fieldset>
     <!-- <label for="sec_street">sec_street</label> -->
     
+
     <fieldset><legend>Secondary address</legend>
     sec_street:<input type="text" id="sec_street" name="sec_street" value=""><br>
     <!-- <label for="sec_city">sec_city</label> -->
@@ -79,7 +80,8 @@ header("location:index.php");
     <!-- <label for="sec_phone">sec_phone</label> -->
     <!-- sec_phone:<input type="text" id="sec_phone" name="sec_phone" value=""><br> -->
     </fieldset>
-    
+    Checkbox: <input type="checkbox" id="same"  onclick="addressFunction()">
+    <label for="same">if primary same as secondary address</label>
     <fieldset>
     <legend>Programs</legend>
     <label for="house_prog">house_prog</label>
@@ -87,19 +89,18 @@ header("location:index.php");
     <label for="service_prog">service_prog</label>
     <input type="text" name="service_prog"><br>
     </fieldset>
-    <input id="update_data" type="submit" value="submit" name="submit">
+    <input type="submit" value="submit" name="submit">
+    <!-- <input type="submit" name="submit1" id="submit"> -->
       
 </form>
-
-<script src="address.js" type="text/javascript"></script>
 <table>
 <thead>
 <th>Username</th>
 <th>email</th>
 <th>View</th>
-<th>Delete</th>
+<th>Delete</th>   
 </thead>
-<tbody id="table">
+<tbody id="responsedata">
 <?php
 require_once('conn.php');
 $sql="SELECT * FROM users";

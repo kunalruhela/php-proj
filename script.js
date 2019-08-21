@@ -1,11 +1,8 @@
-
-$(document).ready(function() {
 	$.ajax({
-		url: "update.php",
-		type: "GET",
-		cache: false,
-		success: function(data){
-			$('#table').html(data); 
-		}
-  })
-});
+	  url:'admin.php',
+	  type:'GET',
+	  datatype:'html',
+	  success:function(responsedata){
+	   $('#responsedata').html(responsedata);   
+	  }
+	});  

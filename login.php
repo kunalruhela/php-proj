@@ -42,6 +42,11 @@ session_start();
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     $uname=$_POST['uname'];
     $pwd=$_POST['pwd'];
+    $msg=$_GET['msg'];
+    if($msg!=''){
+         echo "innhyttu";
+        //echo "alert('Failed')";
+    }
     //$pwd=password_hash($pwd,PASSWORD_DEFAULT);
     $sql="SELECT * FROM users WHERE uname='$uname'";
     $result= $conn-> query($sql);

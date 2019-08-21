@@ -1,5 +1,5 @@
 <?php
- session_start();
+session_start();
 require_once('conn.php');
 //$uid=$_GET['uid'];
 $uname=$_GET['uname'];
